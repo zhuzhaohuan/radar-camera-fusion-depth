@@ -37,7 +37,7 @@ CUDA_VERSION = torch.__version__.split("+")[-1]
 print("torch: ", TORCH_VERSION, "; cuda: ", CUDA_VERSION)
 print("detectron2:", detectron2.__version__)
 
-nusc = NuScenes(version='v1.0-mini', dataroot='data/nuscenes', verbose=True)
+nusc = NuScenes(version='v1.0-trainval', dataroot='data/nuscenes', verbose=True)
 nusc_explorer = NuScenesExplorer(nusc)
 
 ## COCO Label (-1) https://tech.amikelive.com/node-718/what-object-categories-labels-are-in-coco-dataset/
@@ -65,11 +65,11 @@ def get_id_from_category_id(segments_info):
 
 def read_image(file_name, format=None):
     '''Function to read an image
-    Source: https://github.com/longyunf/rc-pda/blob/de993f9ff21357af64308e42c57197e8c7307d89/scripts/semantic_seg.py#L59'''
+    Source: https://githubfast.com/longyunf/rc-pda/blob/de993f9ff21357af64308e42c57197e8c7307d89/scripts/semantic_seg.py#L59'''
     
     image = Image.open(file_name)
 
-    # capture and ignore this bug: https://github.com/python-pillow/Pillow/issues/3973
+    # capture and ignore this bug: https://githubfast.com/python-pillow/Pillow/issues/3973
     try:
         image = ImageOps.exif_transpose(image)
     except Exception:
@@ -92,7 +92,7 @@ def read_image(file_name, format=None):
 
 
 with torch.no_grad():
-    for scene_idx in range(0,10):
+    for scene_idx in range(0,850):
         current_scene = nusc.scene[scene_idx]
         first_sample_token = current_scene['first_sample_token']
         first_sample = nusc.get('sample', first_sample_token)
@@ -116,7 +116,7 @@ with torch.no_grad():
             
                 path_seg = os.path.join(save_panoptic_masks_dir, camera_token + '.npy')
                 np.save(path_seg, panoptic_seg_filtered)
-                print('compute segmentation %d/%d, scene number: %d' % ( scene_idx, 10, current_scene_count ) )
+                print('compute segmentation %d/%d, scene number: %d' % ( scene_idx, 850, current_scene_count ) )
                 current_scene_count = current_scene_count + 1
             camera_token = camera_data['next']
             camera_data = nusc.get('sample_data', camera_token)
@@ -136,4 +136,4 @@ with torch.no_grad():
 
             path_seg = os.path.join(save_panoptic_masks_dir, camera_token + '.npy')
             np.save(path_seg, panoptic_seg_filtered)
-            print('compute segmentation %d/%d, scene number: %d' % ( scene_idx, 10, current_scene_count ) )
+            print('compute segmentation %d/%d, scene number: %d' % ( scene_idx, 850, current_scene_count ) )
