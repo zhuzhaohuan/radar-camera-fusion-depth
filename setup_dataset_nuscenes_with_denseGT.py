@@ -8,9 +8,9 @@ from nuscenes.utils.geometry_utils import view_points, BoxVisibility
 import multiprocessing as mp
 
 sys.path.insert(0, 'src')
-from src import data_utils
+import data_utils
 
-MAX_SCENES = 10
+MAX_SCENES = 850
 
 
 '''
@@ -89,7 +89,7 @@ args = parser.parse_args()
 
 # Create global nuScene object
 nusc = NuScenes(
-    version='v1.0-mini',
+    version='v1.0-trainval',
     dataroot=args.nuscenes_data_root_dirpath,
     verbose=True)
 
@@ -99,7 +99,7 @@ def get_train_val_split_ids(debug=False):
     '''
     Given the nuscenes object, find out which scene ids correspond to which set.
     The split is taken from the official nuScene split available here:
-    https://github.com/nutonomy/nuscenes-devkit/blob/master/python-sdk/nuscenes/utils/splits.py
+    https://githubfast.com/nutonomy/nuscenes-devkit/blob/master/python-sdk/nuscenes/utils/splits.py
 
     Arg(s):
         debug : bool
@@ -110,8 +110,8 @@ def get_train_val_split_ids(debug=False):
         list[int] : list containing ids of the scenes that are validation split
     '''
 
-    train_file_name = os.path.join('../data_split', 'train_ids.pkl')
-    val_file_name = os.path.join('../data_split', 'val_ids.pkl')
+    train_file_name = os.path.join('data_split', 'train_ids.pkl')
+    val_file_name = os.path.join('data_split', 'val_ids.pkl')
 
     open_file = open(train_file_name, "rb")
     train_ids = pickle.load(open_file)
